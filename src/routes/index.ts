@@ -1,0 +1,10 @@
+import { Express, Request, Response } from "express";
+
+type RequestType = Request;
+type ResponseType = Response;
+
+export const routes = (app: Express) => {
+  app.get("/", (req: RequestType, res: ResponseType) => {
+    res.send("TypeScript API running.");
+  });
+};

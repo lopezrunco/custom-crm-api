@@ -1,16 +1,34 @@
-import express, { Request, Response } from "express";
+import express, { Express } from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import mongoose, { ConnectOptions } from "mongoose";
 
-const app = express();
-const port = process.env.PORT || 8080;
+require("dotenv").config();
 
-app.get("/", (_req: Request, res: Response) => {
-  return res.send("TypeScript API on Vercel");
-});
+import { getDbConnectionString } from "./utils/get-db-connection-string";
+import { routes } from "./routes";
 
-app.get("/ping", (_req: Request, res: Response) => {
-  return res.send("pong");
-});
+const app: Express = express();
 
-app.listen(port, () => {
-  return console.log(`Server is listening on ${port}`);
-});
+app.use(cors());
+app.use(bodyParser.json());
+
+const port = process.env.PORT || 3000;
+
+const mongooseOptions: ConnectOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+} as mongoose.ConnectOptions;
+
+mongoose
+  .connect(getDbConnectionString(), mongooseOptions)
+  .then(() => {
+    app.listen(port);
+    console.log(`Server is listening on http://localhost:${port}`);
+    console.log("Connected to database.");
+  })
+  .catch((error) => {
+    console.error("Could not connect to the database => ", error);
+  });
+
+routes(app);
