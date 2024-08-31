@@ -10,7 +10,12 @@ import { routes } from "./routes";
 
 const app: Express = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://tecmedios.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(bodyParser.json());
 
 const port = process.env.PORT || 3000;

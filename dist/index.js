@@ -11,7 +11,11 @@ require("dotenv").config();
 const get_db_connection_string_1 = require("./utils/get-db-connection-string");
 const routes_1 = require("./routes");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: 'https://tecmedios.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(body_parser_1.default.json());
 const port = process.env.PORT || 3000;
 const mongooseOptions = {
