@@ -1,8 +1,8 @@
 import { Express, Request, Response } from "express";
+
 import userRoutes from './user'
 
-type RequestType = Request;
-type ResponseType = Response;
+import { RequestType, ResponseType } from 'common'
 
 export const routes = (app: Express) => {
   app.get("/", (req: RequestType, res: ResponseType) => {

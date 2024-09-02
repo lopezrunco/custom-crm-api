@@ -1,14 +1,11 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
-import { Request, Response } from "express";
 
+import { RequestType, ResponseType } from "common";
 const { CONSUMER_TOKEN_TYPE, REFRESH_TOKEN_TYPE } = require("../../utils/tokenTypes");
 const createToken = require("../../utils/createToken");
 
 import User from "../../models/user";
-
-type RequestType = Request;
-type ResponseType = Response;
 
 module.exports = (req: RequestType, res: ResponseType) => {
   const user = req.body;

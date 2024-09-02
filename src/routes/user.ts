@@ -1,16 +1,17 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 
-const register = require('../controllers/user/register')
+import { RequestType, ResponseType } from "common";
 
-type RequestType = Request;
-type ResponseType = Response;
+const register = require("../controllers/user/register");
+const login = require("../controllers/user/login");
 
 const userRouter = Router();
 
-userRouter.get('/', (req: RequestType, res: ResponseType) => {
-  res.send('User list');
+userRouter.get("/", (req: RequestType, res: ResponseType) => {
+  res.send("User list");
 });
 
-userRouter.post('/register', register)
+userRouter.post("/register", register);
+userRouter.post("/login", login);
 
 export default userRouter;
