@@ -1,4 +1,5 @@
 import { Express, Request, Response } from "express";
+import userRoutes from './userRoutes'
 
 type RequestType = Request;
 type ResponseType = Response;
@@ -11,4 +12,6 @@ export const routes = (app: Express) => {
   app.get("/ping", (_req: Request, res: Response) => {
     return res.send("pong");
   });
+
+  app.use('/users/', userRoutes)
 };

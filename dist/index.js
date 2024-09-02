@@ -8,7 +8,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
 const mongoose_1 = __importDefault(require("mongoose"));
 require("dotenv").config();
-const get_db_connection_string_1 = require("./utils/get-db-connection-string");
+const geDBConnectionString_1 = require("./utils/geDBConnectionString");
 const routes_1 = require("./routes");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)({
@@ -23,7 +23,7 @@ const mongooseOptions = {
     useUnifiedTopology: true,
 };
 mongoose_1.default
-    .connect((0, get_db_connection_string_1.getDbConnectionString)(), mongooseOptions)
+    .connect((0, geDBConnectionString_1.getDbConnectionString)(), mongooseOptions)
     .then(() => {
     app.listen(port);
     console.log(`Server is listening on http://localhost:${port}`);

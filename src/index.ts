@@ -5,7 +5,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 
 require("dotenv").config();
 
-import { getDbConnectionString } from "./utils/get-db-connection-string";
+import { getDbConnectionString } from "./utils/geDBConnectionString";
 import { routes } from "./routes";
 
 const app: Express = express();
