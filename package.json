@@ -1,14 +1,15 @@
 {
-  "name": "api",
+  "name": "tecmedios-crm-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "dev": "nodemon src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc",
+    "start": "node dist/index.js",
     "ts.check": "tsc --project tsconfig.json",
-    "add-build": "git add dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "add-build": "git add dist"
   },
   "keywords": [],
   "author": "",
