@@ -9,9 +9,6 @@ const routes = (app) => {
     app.get("/", (req, res) => {
         res.send("TypeScript API running.");
     });
-    app.get("/ping", (_req, res) => {
-        return res.send("pong");
-    });
     app.use('/users/', user_1.default);
 };
 exports.routes = routes;

@@ -1,4 +1,4 @@
-import { Express, Request, Response } from "express";
+import { Express } from "express";
 
 import userRoutes from './user'
 
@@ -9,9 +9,5 @@ export const routes = (app: Express) => {
     res.send("TypeScript API running.");
   });
   
-  app.get("/ping", (_req: Request, res: Response) => {
-    return res.send("pong");
-  });
-
   app.use('/users/', userRoutes)
 };
