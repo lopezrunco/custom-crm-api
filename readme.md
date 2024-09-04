@@ -64,3 +64,4 @@ Create a .env file in the root directory and add your environment variables. An 
 ## Roadmap:
 
 - [] Protect getAllUser & getUserById endpoints with checkUserCredentials & checkUserRole middlewares.
+- [] Add events.

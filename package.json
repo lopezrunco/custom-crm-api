@@ -7,6 +7,7 @@
     "dev": "nodemon src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc",
+    "seed": "node dist/commands/seeder.js",
     "start": "node dist/index.js",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist"
@@ -38,6 +39,7 @@
     "add-build"
   ],
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/joi": "^17.2.3",
