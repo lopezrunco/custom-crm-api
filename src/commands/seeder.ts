@@ -5,7 +5,7 @@ import { Error } from "mongoose";
 const bcrypt = require("bcrypt");
 const { faker } = require("@faker-js/faker");
 
-import { getDbConnectionString } from "../utils/geDBConnectionString";
+import { getDbConnectionString } from "../utils/getDBConnectionString";
 import User from '../models/user'
 
 interface SeedingUser {

@@ -7,7 +7,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { faker } = require("@faker-js/faker");
-const geDBConnectionString_1 = require("../utils/geDBConnectionString");
+const getDBConnectionString_1 = require("../utils/getDBConnectionString");
 const user_1 = __importDefault(require("../models/user"));
 const usersToSeed = 10;
 const users = [];
@@ -26,7 +26,7 @@ console.log("-------------------------------------");
 console.log("Running data seed...");
 console.log(`${usersToSeed} users to seed...`);
 mongoose
-    .connect((0, geDBConnectionString_1.getDbConnectionString)())
+    .connect((0, getDBConnectionString_1.getDbConnectionString)())
     .then(() => {
     // Promise.all to accept a collection of promises.
     Promise.all([

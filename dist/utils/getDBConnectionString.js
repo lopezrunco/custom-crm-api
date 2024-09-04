@@ -15,4 +15,4 @@ const getDbConnectionString = () => {
     }
 };
 exports.getDbConnectionString = getDbConnectionString;
-//# sourceMappingURL=geDBConnectionString.js.map
+//# sourceMappingURL=getDBConnectionString.js.map
