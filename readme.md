@@ -56,7 +56,12 @@ Create a .env file in the root directory and add your environment variables. An 
     npm run build
 ```
 
-4 - After building, you can start the production server with:
+4 - Insert demo data:
+```sh
+    npm run seed
+```
+
+5 - Start the production server:
 ```sh
     npm start
 ```
