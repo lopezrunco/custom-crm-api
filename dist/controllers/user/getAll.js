@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const logging_1 = __importDefault(require("../../config/logging"));
 const user_1 = __importDefault(require("../../models/user"));
 module.exports = (req, res) => {
     const pagination = { offset: 0, limit: 10 };
@@ -25,12 +26,12 @@ module.exports = (req, res) => {
             res.status(200).json({ meta, users });
         })
             .catch((error) => {
-            console.log(error);
+            logging_1.default.error(`Error: ${error}`);
             res.status(500).json({ message: "Error trying to list the users." });
         });
     })
         .catch((error) => {
-        console.log(error);
+        logging_1.default.error(`Error: ${error}`);
         res.status(500).json({ message: "Error trying to list the users." });
     });
 };

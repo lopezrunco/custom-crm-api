@@ -5,8 +5,10 @@ import mongoose from "mongoose";
 
 require("dotenv").config();
 
+import logging from "./config/logging";
 import { getDbConnectionString } from "./utils/getDBConnectionString";
 import { routes } from "./routes";
+import { loggingMiddleware } from "./middlewares/loggingMiddleware";
 
 const app: Express = express();
 
@@ -16,7 +18,11 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
+app.use(loggingMiddleware);
+
 app.use(bodyParser.json());
+
+routes(app);
 
 const port = process.env.PORT || 3000;
 
@@ -24,11 +30,10 @@ mongoose
   .connect(getDbConnectionString())
   .then(() => {
     app.listen(port);
-    console.log(`Server is listening on http://localhost:${port}`);
-    console.log("Connected to database.");
+    logging.info(`Server is listening on http://localhost:${port}`);
+    logging.info("Connected to database.");
   })
   .catch((error) => {
-    console.error("Could not connect to the database => ", error);
+    logging.error("Could not connect to the database => ", error);
   });
-
-routes(app);
+  

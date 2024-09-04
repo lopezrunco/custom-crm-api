@@ -5,6 +5,7 @@ import { Error } from "mongoose";
 const bcrypt = require("bcrypt");
 const { faker } = require("@faker-js/faker");
 
+import logging from "../config/logging";
 import { getDbConnectionString } from "../utils/getDBConnectionString";
 import User from '../models/user'
 
@@ -32,9 +33,8 @@ for (let userIteration = 0; userIteration < usersToSeed; userIteration++) {
   });
 }
 
-console.log("-------------------------------------");
-console.log("Running data seed...");
-console.log(`${usersToSeed} users to seed...`);
+logging.info("Running data seed...");
+logging.info(`${usersToSeed} users to seed...`);
 
 mongoose
   .connect(getDbConnectionString())
@@ -43,10 +43,10 @@ mongoose
     Promise.all([
       User.insertMany(users)])
     .then(() => {
-      console.log("Done!");
+      logging.info("Done!");
       mongoose.connection.close();
     });
   })
   .catch((error: Error) => {
-    console.error("Error connecting to database: ", error);
+    logging.error(`Error connecting to database: ${error}`);
   });

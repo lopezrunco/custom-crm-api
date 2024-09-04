@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const otplib = require("otplib");
 
+import logging from "../../config/logging";
 import { RequestType, ResponseType } from "common";
 import { returnCredentials } from "../../utils/returnCredentials";
 
@@ -26,27 +27,27 @@ module.exports = (req: RequestType, res: ResponseType) => {
               if (mfaTokenValid) {
                 returnCredentials(user, res);
               } else {
-                console.error("Invalid MFA token.");
+                logging.error("Invalid MFA token.");
                 res.status(401).end();
               }
             } catch (error) {
-              console.error("Error validating MFA token.", error);
+              logging.error("Error validating MFA token.", error);
               res.status(401).end();
             }
           } else {
             returnCredentials(user, res);
           }
         } else {
-          console.error("Password does not match.");
+          logging.error("Password does not match.");
           res.status(401).end();
         }
       } else {
-        console.error("User not found.");
+        logging.error("User not found.");
         res.status(401).end();
       }
     })
     .catch((error) => {
-      console.error(error);
+      logging.error(error);
       res.status(500).json({ message: "Login error." });
     });
 };

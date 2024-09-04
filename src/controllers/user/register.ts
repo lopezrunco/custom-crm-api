@@ -1,9 +1,10 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
 
+import logging from "../../config/logging";
 import { RequestType, ResponseType } from "common";
-const { CONSUMER_TOKEN_TYPE, REFRESH_TOKEN_TYPE } = require("../../utils/tokenTypes");
 const createToken = require("../../utils/createToken");
+const { CONSUMER_TOKEN_TYPE, REFRESH_TOKEN_TYPE } = require("../../utils/tokenTypes");
 
 import User from "../../models/user";
 
@@ -48,9 +49,11 @@ module.exports = (req: RequestType, res: ResponseType) => {
         res.json({ user: userWithoutPassword });
       })
       .catch((error) => {
+        logging.error(`Error: ${error}`)
         res.status(500).json({ message: "Could not register the user.", error });
       });
   } else {
+    logging.error(`Error: ${validationResult.error}`)
     res.status(400).json({ message: validationResult.error });
   }
 };

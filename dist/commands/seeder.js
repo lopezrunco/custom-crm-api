@@ -7,6 +7,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { faker } = require("@faker-js/faker");
+const logging_1 = __importDefault(require("../config/logging"));
 const getDBConnectionString_1 = require("../utils/getDBConnectionString");
 const user_1 = __importDefault(require("../models/user"));
 const usersToSeed = 10;
@@ -22,9 +23,8 @@ for (let userIteration = 0; userIteration < usersToSeed; userIteration++) {
         role: userIteration < 2 ? "VENDOR" : "CUSTOMER", // First users are Vendors, the rest Customers.
     });
 }
-console.log("-------------------------------------");
-console.log("Running data seed...");
-console.log(`${usersToSeed} users to seed...`);
+logging_1.default.info("Running data seed...");
+logging_1.default.info(`${usersToSeed} users to seed...`);
 mongoose
     .connect((0, getDBConnectionString_1.getDbConnectionString)())
     .then(() => {
@@ -33,11 +33,11 @@ mongoose
         user_1.default.insertMany(users)
     ])
         .then(() => {
-        console.log("Done!");
+        logging_1.default.info("Done!");
         mongoose.connection.close();
     });
 })
     .catch((error) => {
-    console.error("Error connecting to database: ", error);
+    logging_1.default.error(`Error connecting to database: ${error}`);
 });
 //# sourceMappingURL=seeder.js.map

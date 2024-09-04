@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt = require("bcrypt");
 const otplib = require("otplib");
+const logging_1 = __importDefault(require("../../config/logging"));
 const returnCredentials_1 = require("../../utils/returnCredentials");
 const user_1 = __importDefault(require("../../models/user"));
 module.exports = (req, res) => {
@@ -23,12 +24,12 @@ module.exports = (req, res) => {
                             (0, returnCredentials_1.returnCredentials)(user, res);
                         }
                         else {
-                            console.error("Invalid MFA token.");
+                            logging_1.default.error("Invalid MFA token.");
                             res.status(401).end();
                         }
                     }
                     catch (error) {
-                        console.error("Error validating MFA token.", error);
+                        logging_1.default.error("Error validating MFA token.", error);
                         res.status(401).end();
                     }
                 }
@@ -37,17 +38,17 @@ module.exports = (req, res) => {
                 }
             }
             else {
-                console.error("Password does not match.");
+                logging_1.default.error("Password does not match.");
                 res.status(401).end();
             }
         }
         else {
-            console.error("User not found.");
+            logging_1.default.error("User not found.");
             res.status(401).end();
         }
     })
         .catch((error) => {
-        console.error(error);
+        logging_1.default.error(error);
         res.status(500).json({ message: "Login error." });
     });
 };

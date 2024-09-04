@@ -1,3 +1,4 @@
+import logging from "../../config/logging";
 import { RequestType, ResponseType } from "common";
 
 import User from "../../models/user";
@@ -25,12 +26,12 @@ module.exports = (req: RequestType, res: ResponseType) => {
           res.status(200).json({ meta, users });
         })
         .catch((error: Error) => {
-          console.log(error);
+          logging.error(`Error: ${error}`);
           res.status(500).json({ message: "Error trying to list the users." });
         });
     })
     .catch((error: Error) => {
-      console.log(error);
+      logging.error(`Error: ${error}`);
       res.status(500).json({ message: "Error trying to list the users." });
     });
 };
