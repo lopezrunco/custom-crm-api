@@ -18,12 +18,8 @@ app.use((0, cors_1.default)({
 }));
 app.use(body_parser_1.default.json());
 const port = process.env.PORT || 3000;
-const mongooseOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-};
 mongoose_1.default
-    .connect((0, geDBConnectionString_1.getDbConnectionString)(), mongooseOptions)
+    .connect((0, geDBConnectionString_1.getDbConnectionString)())
     .then(() => {
     app.listen(port);
     console.log(`Server is listening on http://localhost:${port}`);

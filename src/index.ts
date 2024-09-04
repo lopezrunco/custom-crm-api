@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import mongoose, { ConnectOptions } from "mongoose";
+import mongoose from "mongoose";
 
 require("dotenv").config();
 
@@ -20,13 +20,8 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 3000;
 
-const mongooseOptions: ConnectOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-} as mongoose.ConnectOptions;
-
 mongoose
-  .connect(getDbConnectionString(), mongooseOptions)
+  .connect(getDbConnectionString())
   .then(() => {
     app.listen(port);
     console.log(`Server is listening on http://localhost:${port}`);

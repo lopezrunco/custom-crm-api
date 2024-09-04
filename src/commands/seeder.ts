@@ -1,9 +1,9 @@
 require("dotenv").config();
 
+const mongoose = require("mongoose");
 import { Error } from "mongoose";
 const bcrypt = require("bcrypt");
 const { faker } = require("@faker-js/faker");
-const mongoose = require("mongoose");
 
 import { getDbConnectionString } from "../utils/geDBConnectionString";
 import User from '../models/user'
@@ -37,10 +37,7 @@ console.log("Running data seed...");
 console.log(`${usersToSeed} users to seed...`);
 
 mongoose
-  .connect(getDbConnectionString(), {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(getDbConnectionString())
   .then(() => {
     // Promise.all to accept a collection of promises.
     Promise.all([
