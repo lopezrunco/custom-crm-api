@@ -12,7 +12,7 @@ const user_1 = __importDefault(require("../../models/user"));
 module.exports = (req, res) => {
     const user = req.body;
     const schema = Joi.object({
-        name: Joi.string().alphanum().required(),
+        name: Joi.string().pattern(/^[a-zA-Z\s]+$/).required(),
         email: Joi.string().email().required(),
         password: Joi.string().min(7).max(50).required(),
     });
