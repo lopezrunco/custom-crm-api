@@ -1,5 +1,5 @@
 import { ResponseType } from "common";
-import IUser from "../interfaces/user";
+import IUser from "../interfaces/user.interface";
 
 const { CONSUMER_TOKEN_TYPE, REFRESH_TOKEN_TYPE } = require("../utils/tokenTypes");
 const createToken = require("../utils/createToken");
