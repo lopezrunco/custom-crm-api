@@ -29,14 +29,14 @@ describe("seeder.ts", () => {
     jest.clearAllMocks();
   });
 
+  const mockInsertMany = User.insertMany as jest.Mock;
+  const mockConnect = mongoose.connect as jest.Mock;
+  const mockClose = mongoose.connection.close as jest.Mock;
+  const mockLoggingInfo = logging.info as jest.Mock;
+  const mockLoggingError = logging.error as jest.Mock;
+
   test("should seed the correct number of users", async () => {
     // Verify that the seedData function from seeder.ts file correctly seeds user data into the database.
-
-    const mockInsertMany = User.insertMany as jest.Mock;
-    const mockConnect = mongoose.connect as jest.Mock;
-    const mockClose = mongoose.connection.close as jest.Mock;
-    const mockLoggingInfo = logging.info as jest.Mock;
-    const mockLoggingError = logging.error as jest.Mock;
 
     // Mock the implementations.
     // Resolve with empty array or object, simulating a successful insertion.
@@ -71,11 +71,6 @@ describe("seeder.ts", () => {
     // Test how the seedData function handles errors when connecting to the database.
     // Ensures the errors are logged correctly.
 
-    const mockConnect = mongoose.connect as jest.Mock;
-    const mockClose = mongoose.connection.close as jest.Mock;
-    const mockLoggingInfo = logging.info as jest.Mock;
-    const mockLoggingError = logging.error as jest.Mock;
-
     // Simulate a DB connection error.
     mockConnect.mockRejectedValue(new Error("Connection failed"));
 
@@ -94,12 +89,6 @@ describe("seeder.ts", () => {
 
   test("should hanlde errors during user insertion", async () => {
     // Test how the seedData function handles errors when inserting data into the database.
-
-    const mockConnect = mongoose.connect as jest.Mock;
-    const mockInsertMany = User.insertMany as jest.Mock;
-    const mockClose = mongoose.connection.close as jest.Mock;
-    const mockLoggingInfo = logging.info as jest.Mock;
-    const mockLoggingError = logging.error as jest.Mock;
 
     // Mock DB connection succeed.
     mockConnect.mockResolvedValue({});

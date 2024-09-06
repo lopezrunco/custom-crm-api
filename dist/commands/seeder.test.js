@@ -37,13 +37,13 @@ describe("seeder.ts", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
+    const mockInsertMany = user_1.default.insertMany;
+    const mockConnect = mongoose_1.default.connect;
+    const mockClose = mongoose_1.default.connection.close;
+    const mockLoggingInfo = logging_1.default.info;
+    const mockLoggingError = logging_1.default.error;
     test("should seed the correct number of users", () => __awaiter(void 0, void 0, void 0, function* () {
         // Verify that the seedData function from seeder.ts file correctly seeds user data into the database.
-        const mockInsertMany = user_1.default.insertMany;
-        const mockConnect = mongoose_1.default.connect;
-        const mockClose = mongoose_1.default.connection.close;
-        const mockLoggingInfo = logging_1.default.info;
-        const mockLoggingError = logging_1.default.error;
         // Mock the implementations.
         // Resolve with empty array or object, simulating a successful insertion.
         mockInsertMany.mockResolvedValue([]);
@@ -70,10 +70,6 @@ describe("seeder.ts", () => {
     test("should handle DB connection errors", () => __awaiter(void 0, void 0, void 0, function* () {
         // Test how the seedData function handles errors when connecting to the database.
         // Ensures the errors are logged correctly.
-        const mockConnect = mongoose_1.default.connect;
-        const mockClose = mongoose_1.default.connection.close;
-        const mockLoggingInfo = logging_1.default.info;
-        const mockLoggingError = logging_1.default.error;
         // Simulate a DB connection error.
         mockConnect.mockRejectedValue(new Error("Connection failed"));
         yield (0, seeder_1.seedData)();
@@ -86,11 +82,6 @@ describe("seeder.ts", () => {
     }));
     test("should hanlde errors during user insertion", () => __awaiter(void 0, void 0, void 0, function* () {
         // Test how the seedData function handles errors when inserting data into the database.
-        const mockConnect = mongoose_1.default.connect;
-        const mockInsertMany = user_1.default.insertMany;
-        const mockClose = mongoose_1.default.connection.close;
-        const mockLoggingInfo = logging_1.default.info;
-        const mockLoggingError = logging_1.default.error;
         // Mock DB connection succeed.
         mockConnect.mockResolvedValue({});
         // Mock error during the user insertion.
