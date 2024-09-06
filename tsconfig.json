@@ -9,6 +9,11 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
+    "types": ["node","jest"],
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
     "paths": {
       "*": [
         "node_modules/*",

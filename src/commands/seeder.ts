@@ -13,7 +13,7 @@ const usersToSeed: number = 10;
 const users: SeedingUser[] = [];
 const userPassword: string | undefined = bcrypt.hashSync("pass123", 2);
 
-const seedData = async () => {
+export const seedData = async () => {
   logging.info("Running data seed...");
   logging.info(`${usersToSeed} users to seed...`);
 
