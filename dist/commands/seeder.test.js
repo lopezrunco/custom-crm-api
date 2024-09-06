@@ -84,5 +84,22 @@ describe("seeder.ts", () => {
         expect(mockInsertMany).not.toHaveBeenCalled();
         expect(mockClose).toHaveBeenCalled();
     }));
+    test("should hanlde errors during user insertion", () => __awaiter(void 0, void 0, void 0, function* () {
+        // Test how the seedData function handles errors when inserting data into the database.
+        const mockConnect = mongoose_1.default.connect;
+        const mockInsertMany = user_1.default.insertMany;
+        const mockClose = mongoose_1.default.connection.close;
+        const mockLoggingInfo = logging_1.default.info;
+        const mockLoggingError = logging_1.default.error;
+        // Mock DB connection succeed.
+        mockConnect.mockResolvedValue({});
+        // Mock error during the user insertion.
+        mockInsertMany.mockRejectedValue(new Error("Insertion failed"));
+        yield (0, seeder_1.seedData)();
+        expect(mockLoggingError).toHaveBeenCalledWith("Error connecting to database: Error: Insertion failed");
+        expect(mockLoggingInfo).toHaveBeenCalledWith("Running data seed...");
+        expect(mockLoggingInfo).toHaveBeenCalledWith("10 users to seed...");
+        expect(mockClose).toHaveBeenCalled();
+    }));
 });
 //# sourceMappingURL=seeder.test.js.map

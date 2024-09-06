@@ -91,4 +91,28 @@ describe("seeder.ts", () => {
     expect(mockInsertMany).not.toHaveBeenCalled();
     expect(mockClose).toHaveBeenCalled();
   });
+
+  test("should hanlde errors during user insertion", async () => {
+    // Test how the seedData function handles errors when inserting data into the database.
+
+    const mockConnect = mongoose.connect as jest.Mock;
+    const mockInsertMany = User.insertMany as jest.Mock;
+    const mockClose = mongoose.connection.close as jest.Mock;
+    const mockLoggingInfo = logging.info as jest.Mock;
+    const mockLoggingError = logging.error as jest.Mock;
+
+    // Mock DB connection succeed.
+    mockConnect.mockResolvedValue({});
+    // Mock error during the user insertion.
+    mockInsertMany.mockRejectedValue(new Error("Insertion failed"));
+
+    await seedData();
+
+    expect(mockLoggingError).toHaveBeenCalledWith(
+      "Error connecting to database: Error: Insertion failed"
+    );
+    expect(mockLoggingInfo).toHaveBeenCalledWith("Running data seed...");
+    expect(mockLoggingInfo).toHaveBeenCalledWith("10 users to seed...");
+    expect(mockClose).toHaveBeenCalled();
+  });
 });
