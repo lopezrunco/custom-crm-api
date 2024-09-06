@@ -44,21 +44,21 @@ describe("getAllUsers controller", () => {
         user_1.default.countDocuments.mockClear();
         logging_1.default.error.mockClear();
     });
+    const users = [{ name: "Dante Alighieri" }, { name: "Charles Dickens" }];
+    const count = 2;
+    // Mock  User.find to return 'select', 'skip', 'limit' and 'then' methods.
+    // Each one of this methods is chain to return 'this', allwoing method chaining.
+    user_1.default.find.mockReturnValue({
+        select: jest.fn().mockReturnThis(),
+        skip: jest.fn().mockReturnThis(),
+        limit: jest.fn().mockReturnThis(),
+        // Returns a promise resolving with the users array.
+        then: jest.fn().mockImplementation((cb) => Promise.resolve(cb(users))),
+    });
+    // Mock to return the user count value.
+    user_1.default.countDocuments.mockResolvedValue(count);
     test("should return the user list with the correct pagination", () => __awaiter(void 0, void 0, void 0, function* () {
         // This test assures that the function pagination beaheves correctly and returning the correct data and status.
-        const users = [{ name: "Dante Alighieri" }, { name: "Charles Dickens" }];
-        const count = 2;
-        // Mock  User.find to return 'select', 'skip', 'limit' and 'then' methods.
-        // Each one of this methods is chain to return 'this', allwoing method chaining.
-        user_1.default.find.mockReturnValue({
-            select: jest.fn().mockReturnThis(),
-            skip: jest.fn().mockReturnThis(),
-            limit: jest.fn().mockReturnThis(),
-            // Returns a promise resolving with the users array.
-            then: jest.fn().mockImplementation((cb) => Promise.resolve(cb(users))),
-        });
-        // Mock to return the user count value.
-        user_1.default.countDocuments.mockResolvedValue(count);
         // Simulate the pagination parameters.
         req.query.page = "2";
         req.query.itemsPerPage = "5";
@@ -73,6 +73,25 @@ describe("getAllUsers controller", () => {
         expect(user_1.default.find().select).toHaveBeenCalledWith("-password -mfaSecret");
         expect(user_1.default.find().skip).toHaveBeenCalledWith(5);
         expect(user_1.default.find().limit).toHaveBeenCalledWith(5);
+        expect(user_1.default.countDocuments).toHaveBeenCalled();
+        expect(status).toHaveBeenCalledWith(200);
+        expect(json).toHaveBeenCalledWith({
+            meta: { count },
+            users,
+        });
+    }));
+    test("should return users with deafult pagination when no pagination parameters are provided", () => __awaiter(void 0, void 0, void 0, function* () {
+        // Ensure that default pagination is applied when no pagination parameters are in the query.
+        // Simulate undefined pagination parameters.
+        req.query.page = undefined;
+        req.query.itemsPerPage = undefined;
+        yield getAllUsers(req, res);
+        expect(user_1.default.find).toHaveBeenCalledWith();
+        const findCall = user_1.default.find.mock.calls[0][0];
+        expect(findCall).toEqual(expect.objectContaining({}));
+        expect(user_1.default.find().select).toHaveBeenCalledWith("-password -mfaSecret");
+        expect(user_1.default.find().skip).toHaveBeenCalledWith(0);
+        expect(user_1.default.find().limit).toHaveBeenCalledWith(10);
         expect(user_1.default.countDocuments).toHaveBeenCalled();
         expect(status).toHaveBeenCalledWith(200);
         expect(json).toHaveBeenCalledWith({

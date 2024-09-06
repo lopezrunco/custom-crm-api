@@ -38,23 +38,23 @@ describe("getAllUsers controller", () => {
     (logging.error as jest.Mock).mockClear();
   });
 
+  const users = [{ name: "Dante Alighieri" }, { name: "Charles Dickens" }];
+  const count = 2;
+
+  // Mock  User.find to return 'select', 'skip', 'limit' and 'then' methods.
+  // Each one of this methods is chain to return 'this', allwoing method chaining.
+  (User.find as jest.Mock).mockReturnValue({
+    select: jest.fn().mockReturnThis(),
+    skip: jest.fn().mockReturnThis(),
+    limit: jest.fn().mockReturnThis(),
+    // Returns a promise resolving with the users array.
+    then: jest.fn().mockImplementation((cb) => Promise.resolve(cb(users))),
+  });
+  // Mock to return the user count value.
+  (User.countDocuments as jest.Mock).mockResolvedValue(count);
+
   test("should return the user list with the correct pagination", async () => {
     // This test assures that the function pagination beaheves correctly and returning the correct data and status.
-
-    const users = [{ name: "Dante Alighieri" }, { name: "Charles Dickens" }];
-    const count = 2;
-
-    // Mock  User.find to return 'select', 'skip', 'limit' and 'then' methods.
-    // Each one of this methods is chain to return 'this', allwoing method chaining.
-    (User.find as jest.Mock).mockReturnValue({
-      select: jest.fn().mockReturnThis(),
-      skip: jest.fn().mockReturnThis(),
-      limit: jest.fn().mockReturnThis(),
-      // Returns a promise resolving with the users array.
-      then: jest.fn().mockImplementation((cb) => Promise.resolve(cb(users))),
-    });
-    // Mock to return the user count value.
-    (User.countDocuments as jest.Mock).mockResolvedValue(count);
 
     // Simulate the pagination parameters.
     req.query.page = "2";
@@ -74,6 +74,32 @@ describe("getAllUsers controller", () => {
     expect(User.find().select).toHaveBeenCalledWith("-password -mfaSecret");
     expect(User.find().skip).toHaveBeenCalledWith(5);
     expect(User.find().limit).toHaveBeenCalledWith(5);
+    expect(User.countDocuments).toHaveBeenCalled();
+
+    expect(status).toHaveBeenCalledWith(200);
+    expect(json).toHaveBeenCalledWith({
+      meta: { count },
+      users,
+    });
+  });
+
+  test("should return users with deafult pagination when no pagination parameters are provided", async () => {
+    // Ensure that default pagination is applied when no pagination parameters are in the query.
+
+    // Simulate undefined pagination parameters.
+    req.query.page = undefined;
+    req.query.itemsPerPage = undefined;
+
+    await getAllUsers(req as Request, res as Response);
+
+    expect(User.find).toHaveBeenCalledWith();
+
+    const findCall = (User.find as jest.Mock).mock.calls[0][0];
+    expect(findCall).toEqual(expect.objectContaining({}));
+
+    expect(User.find().select).toHaveBeenCalledWith("-password -mfaSecret");
+    expect(User.find().skip).toHaveBeenCalledWith(0);
+    expect(User.find().limit).toHaveBeenCalledWith(10);
     expect(User.countDocuments).toHaveBeenCalled();
 
     expect(status).toHaveBeenCalledWith(200);
