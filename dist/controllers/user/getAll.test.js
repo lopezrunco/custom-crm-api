@@ -57,8 +57,9 @@ describe("getAllUsers controller", () => {
     });
     // Mock to return the user count value.
     user_1.default.countDocuments.mockResolvedValue(count);
+    // Test user listing:
+    // This test assures that the function pagination beaheves correctly and returning the correct data and status.
     test("should return the user list with the correct pagination", () => __awaiter(void 0, void 0, void 0, function* () {
-        // This test assures that the function pagination beaheves correctly and returning the correct data and status.
         // Simulate the pagination parameters.
         req.query.page = "2";
         req.query.itemsPerPage = "5";
@@ -80,8 +81,9 @@ describe("getAllUsers controller", () => {
             users,
         });
     }));
+    // Test when no pagination parameters are provided:
+    // Ensure that default pagination is applied when no pagination parameters are in the query.
     test("should return users with deafult pagination when no pagination parameters are provided", () => __awaiter(void 0, void 0, void 0, function* () {
-        // Ensure that default pagination is applied when no pagination parameters are in the query.
         // Simulate undefined pagination parameters.
         req.query.page = undefined;
         req.query.itemsPerPage = undefined;

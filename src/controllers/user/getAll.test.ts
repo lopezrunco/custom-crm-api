@@ -53,9 +53,9 @@ describe("getAllUsers controller", () => {
   // Mock to return the user count value.
   (User.countDocuments as jest.Mock).mockResolvedValue(count);
 
+  // Test user listing:
+  // This test assures that the function pagination beaheves correctly and returning the correct data and status.
   test("should return the user list with the correct pagination", async () => {
-    // This test assures that the function pagination beaheves correctly and returning the correct data and status.
-
     // Simulate the pagination parameters.
     req.query.page = "2";
     req.query.itemsPerPage = "5";
@@ -83,9 +83,9 @@ describe("getAllUsers controller", () => {
     });
   });
 
+  // Test when no pagination parameters are provided:
+  // Ensure that default pagination is applied when no pagination parameters are in the query.
   test("should return users with deafult pagination when no pagination parameters are provided", async () => {
-    // Ensure that default pagination is applied when no pagination parameters are in the query.
-
     // Simulate undefined pagination parameters.
     req.query.page = undefined;
     req.query.itemsPerPage = undefined;

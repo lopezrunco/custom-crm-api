@@ -35,9 +35,9 @@ describe("seeder.ts", () => {
   const mockLoggingInfo = logging.info as jest.Mock;
   const mockLoggingError = logging.error as jest.Mock;
 
+  // Test seeding users successfully:
+  // Verify that the seedData function from seeder.ts file correctly seeds user data into the database.
   test("should seed the correct number of users", async () => {
-    // Verify that the seedData function from seeder.ts file correctly seeds user data into the database.
-
     // Mock the implementations.
     // Resolve with empty array or object, simulating a successful insertion.
     mockInsertMany.mockResolvedValue([]);
@@ -67,10 +67,10 @@ describe("seeder.ts", () => {
     expect(mockLoggingError).not.toHaveBeenCalled();
   });
 
+  // Test DB connection error:
+  // Test how the seedData function handles errors when connecting to the database.
+  // Ensures the errors are logged correctly.
   test("should handle DB connection errors", async () => {
-    // Test how the seedData function handles errors when connecting to the database.
-    // Ensures the errors are logged correctly.
-
     // Simulate a DB connection error.
     mockConnect.mockRejectedValue(new Error("Connection failed"));
 
@@ -87,9 +87,9 @@ describe("seeder.ts", () => {
     expect(mockClose).toHaveBeenCalled();
   });
 
-  test("should hanlde errors during user insertion", async () => {
-    // Test how the seedData function handles errors when inserting data into the database.
-
+  // Test seeding error:
+  // Test how the seedData function handles errors when inserting data into the database.
+  test("should handle errors during user insertion", async () => {
     // Mock DB connection succeed.
     mockConnect.mockResolvedValue({});
     // Mock error during the user insertion.

@@ -42,8 +42,9 @@ describe("seeder.ts", () => {
     const mockClose = mongoose_1.default.connection.close;
     const mockLoggingInfo = logging_1.default.info;
     const mockLoggingError = logging_1.default.error;
+    // Test seeding users successfully:
+    // Verify that the seedData function from seeder.ts file correctly seeds user data into the database.
     test("should seed the correct number of users", () => __awaiter(void 0, void 0, void 0, function* () {
-        // Verify that the seedData function from seeder.ts file correctly seeds user data into the database.
         // Mock the implementations.
         // Resolve with empty array or object, simulating a successful insertion.
         mockInsertMany.mockResolvedValue([]);
@@ -67,9 +68,10 @@ describe("seeder.ts", () => {
         expect(mockLoggingInfo).toHaveBeenCalledWith("Done!");
         expect(mockLoggingError).not.toHaveBeenCalled();
     }));
+    // Test DB connection error:
+    // Test how the seedData function handles errors when connecting to the database.
+    // Ensures the errors are logged correctly.
     test("should handle DB connection errors", () => __awaiter(void 0, void 0, void 0, function* () {
-        // Test how the seedData function handles errors when connecting to the database.
-        // Ensures the errors are logged correctly.
         // Simulate a DB connection error.
         mockConnect.mockRejectedValue(new Error("Connection failed"));
         yield (0, seeder_1.seedData)();
@@ -80,8 +82,9 @@ describe("seeder.ts", () => {
         expect(mockInsertMany).not.toHaveBeenCalled();
         expect(mockClose).toHaveBeenCalled();
     }));
-    test("should hanlde errors during user insertion", () => __awaiter(void 0, void 0, void 0, function* () {
-        // Test how the seedData function handles errors when inserting data into the database.
+    // Test seeding error:
+    // Test how the seedData function handles errors when inserting data into the database.
+    test("should handle errors during user insertion", () => __awaiter(void 0, void 0, void 0, function* () {
         // Mock DB connection succeed.
         mockConnect.mockResolvedValue({});
         // Mock error during the user insertion.
