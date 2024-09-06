@@ -66,4 +66,29 @@ describe("seeder.ts", () => {
     expect(mockLoggingInfo).toHaveBeenCalledWith("Done!");
     expect(mockLoggingError).not.toHaveBeenCalled();
   });
+
+  test("should handle DB connection errors", async () => {
+    // Test how the seedData function handles errors when connecting to the database.
+    // Ensures the errors are logged correctly.
+
+    const mockConnect = mongoose.connect as jest.Mock;
+    const mockClose = mongoose.connection.close as jest.Mock;
+    const mockLoggingInfo = logging.info as jest.Mock;
+    const mockLoggingError = logging.error as jest.Mock;
+
+    // Simulate a DB connection error.
+    mockConnect.mockRejectedValue(new Error("Connection failed"));
+
+    await seedData();
+
+    expect(mockLoggingError).toHaveBeenCalledWith(
+      "Error connecting to database: Error: Connection failed"
+    );
+    expect(mockLoggingInfo).toHaveBeenCalledWith("Running data seed...");
+    expect(mockLoggingInfo).toHaveBeenCalledWith("10 users to seed...");
+
+    const mockInsertMany = User.insertMany as jest.Mock;
+    expect(mockInsertMany).not.toHaveBeenCalled();
+    expect(mockClose).toHaveBeenCalled();
+  });
 });
