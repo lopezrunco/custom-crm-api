@@ -108,4 +108,28 @@ describe("getAllUsers controller", () => {
       users,
     });
   });
+
+  // Test when query parameters are non numeric.
+  test("should handle non numeric query parameters successfully", async () => {
+    // Simulate non numeric pagination parameters.
+    req.query.page = "abc";
+    req.query.itemsPerPage = "def";
+
+    await getAllUsers(req as Request, res as Response);
+
+    expect(User.find).toHaveBeenCalled();
+    const findCall = (User.find as jest.Mock).mock.calls[0][0];
+    expect(findCall).toEqual(expect.objectContaining({}));
+
+    expect(User.find().select).toHaveBeenCalledWith("-password -mfaSecret");
+    expect(User.find().skip).toHaveBeenCalledWith(0);
+    expect(User.find().limit).toHaveBeenCalledWith(10);
+    expect(User.countDocuments).toHaveBeenCalled();
+
+    expect(status).toHaveBeenCalledWith(200);
+    expect(json).toHaveBeenCalledWith({
+      meta: { count },
+      users,
+    });
+  });
 });

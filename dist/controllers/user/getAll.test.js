@@ -101,5 +101,24 @@ describe("getAllUsers controller", () => {
             users,
         });
     }));
+    // Test when query parameters are non numeric.
+    test("should handle non numeric query parameters successfully", () => __awaiter(void 0, void 0, void 0, function* () {
+        // Simulate non numeric pagination parameters.
+        req.query.page = "abc";
+        req.query.itemsPerPage = "def";
+        yield getAllUsers(req, res);
+        expect(user_1.default.find).toHaveBeenCalled();
+        const findCall = user_1.default.find.mock.calls[0][0];
+        expect(findCall).toEqual(expect.objectContaining({}));
+        expect(user_1.default.find().select).toHaveBeenCalledWith("-password -mfaSecret");
+        expect(user_1.default.find().skip).toHaveBeenCalledWith(0);
+        expect(user_1.default.find().limit).toHaveBeenCalledWith(10);
+        expect(user_1.default.countDocuments).toHaveBeenCalled();
+        expect(status).toHaveBeenCalledWith(200);
+        expect(json).toHaveBeenCalledWith({
+            meta: { count },
+            users,
+        });
+    }));
 });
 //# sourceMappingURL=getAll.test.js.map
