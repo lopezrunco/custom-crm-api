@@ -134,5 +134,21 @@ describe("getAllUsers controller", () => {
             users,
         });
     }));
+    // Test reponse structure
+    test('should return the correct response structure', () => __awaiter(void 0, void 0, void 0, function* () {
+        req.query.page = "1";
+        req.query.itemsPerPage = "10";
+        yield getAllUsers(req, res);
+        expect(json).toHaveBeenCalledWith(expect.objectContaining({
+            meta: expect.objectContaining({
+                count: expect.any(Number)
+            }),
+            users: expect.arrayContaining([
+                expect.objectContaining({
+                    name: expect.any(String)
+                })
+            ])
+        }));
+    }));
 });
 //# sourceMappingURL=getAll.test.js.map
