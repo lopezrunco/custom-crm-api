@@ -120,5 +120,19 @@ describe("getAllUsers controller", () => {
             users,
         });
     }));
+    // Test when query parameters are empty.
+    test("should handle empty query parameters successfully", () => __awaiter(void 0, void 0, void 0, function* () {
+        // Simulate empty pagination parameters.
+        req.query.page = "";
+        req.query.itemsPerPage = "";
+        yield getAllUsers(req, res);
+        expect(user_1.default.find().skip).toHaveBeenCalledWith(0);
+        expect(user_1.default.find().limit).toHaveBeenCalledWith(10);
+        expect(status).toHaveBeenCalledWith(200);
+        expect(json).toHaveBeenCalledWith({
+            meta: { count },
+            users,
+        });
+    }));
 });
 //# sourceMappingURL=getAll.test.js.map
