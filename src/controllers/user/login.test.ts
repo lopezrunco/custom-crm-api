@@ -53,5 +53,21 @@ describe("login controller", () => {
     expect(returnCredentials).toHaveBeenCalledWith(user, res);
     expect(res.status).not.toHaveBeenCalled();
   });
+
+  it("should return 401 for invalid password", async () => {
+    const user = {
+      email: "test@example.com",
+      password: bcrypt.hashSync("wrongpassword", 10),
+      mfaEnabled: false,
+    };
+
+    (User.findOne as jest.Mock).mockResolvedValue(user);
+
+    await login(req as Request, res as Response);
+
+    expect(logging.error).toHaveBeenCalledWith("Password does not match.");
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.end).toHaveBeenCalled();
+  });
 });
 

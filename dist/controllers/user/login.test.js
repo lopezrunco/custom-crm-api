@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const login = require("./login");
 const user_1 = __importDefault(require("../../models/user"));
+const logging_1 = __importDefault(require("../../config/logging"));
 const returnCredentials_1 = require("../../utils/returnCredentials");
 jest.mock("../../models/user");
 jest.mock("../../config/logging");
@@ -54,6 +55,18 @@ describe("login controller", () => {
         yield login(req, res);
         expect(returnCredentials_1.returnCredentials).toHaveBeenCalledWith(user, res);
         expect(res.status).not.toHaveBeenCalled();
+    }));
+    it("should return 401 for invalid password", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user = {
+            email: "test@example.com",
+            password: bcrypt_1.default.hashSync("wrongpassword", 10),
+            mfaEnabled: false,
+        };
+        user_1.default.findOne.mockResolvedValue(user);
+        yield login(req, res);
+        expect(logging_1.default.error).toHaveBeenCalledWith("Password does not match.");
+        expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.end).toHaveBeenCalled();
     }));
 });
 //# sourceMappingURL=login.test.js.map
