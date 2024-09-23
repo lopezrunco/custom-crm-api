@@ -54,6 +54,7 @@ describe("login controller", () => {
     expect(res.status).not.toHaveBeenCalled();
   });
 
+  // Test login with incorrect password.
   it("should return 401 for invalid password", async () => {
     const user = {
       email: "test@example.com",
@@ -66,6 +67,17 @@ describe("login controller", () => {
     await login(req as Request, res as Response);
 
     expect(logging.error).toHaveBeenCalledWith("Password does not match.");
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.end).toHaveBeenCalled();
+  });
+
+  // Test user not found.
+  it("should return 401 when the user is not found", async () => {
+    (User.findOne as jest.Mock).mockResolvedValue(null);
+
+    await login(req as Request, res as Response);
+
+    expect(logging.error).toHaveBeenCalledWith("User not found.");
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.end).toHaveBeenCalled();
   });

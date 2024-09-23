@@ -56,6 +56,7 @@ describe("login controller", () => {
         expect(returnCredentials_1.returnCredentials).toHaveBeenCalledWith(user, res);
         expect(res.status).not.toHaveBeenCalled();
     }));
+    // Test login with incorrect password.
     it("should return 401 for invalid password", () => __awaiter(void 0, void 0, void 0, function* () {
         const user = {
             email: "test@example.com",
@@ -65,6 +66,14 @@ describe("login controller", () => {
         user_1.default.findOne.mockResolvedValue(user);
         yield login(req, res);
         expect(logging_1.default.error).toHaveBeenCalledWith("Password does not match.");
+        expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.end).toHaveBeenCalled();
+    }));
+    // Test user not found.
+    it("should return 401 when the user is not found", () => __awaiter(void 0, void 0, void 0, function* () {
+        user_1.default.findOne.mockResolvedValue(null);
+        yield login(req, res);
+        expect(logging_1.default.error).toHaveBeenCalledWith("User not found.");
         expect(res.status).toHaveBeenCalledWith(401);
         expect(res.end).toHaveBeenCalled();
     }));
