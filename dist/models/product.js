@@ -24,24 +24,28 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const userSchema = new mongoose_1.Schema({
+const productchema = new mongoose_1.Schema({
     name: { type: String, required: true, trim: true },
-    email: { type: String, unique: true, required: true, trim: true },
-    password: { type: String, required: true, trim: true },
-    role: { type: String, required: true, enum: ['CUSTOMER', 'VENDOR', 'INSTALLER', 'SUPER'], trim: true },
-    mfaEnabled: { type: Boolean, required: false },
-    mfaSecret: { type: String, required: false },
-    tel: { type: String, required: false, trim: true },
-    address: { type: String, required: false, trim: true },
-    intersection: { type: String, required: false, trim: true },
-    neighborhood: { type: String, required: false, trim: true },
-    observations: { type: String, required: false, trim: true },
-    billing: {
-        rs: { type: String, required: false, trim: true },
-        rut: { type: Number, required: false, unique: true, trim: true },
-        address: { type: String, required: false, trim: true },
+    category: { type: String },
+    description: { type: String },
+    brand: { type: String },
+    productModel: { type: String },
+    capacity: { type: Number },
+    filterType: { type: String },
+    filterLife: { type: Number },
+    dimensions: {
+        height: { type: Number },
+        width: { type: Number },
+        depth: { type: Number },
     },
-    profileImageUrl: { type: String, required: false, trim: true }
+    weight: { type: Number },
+    warranty: { type: Boolean },
+    warrantyPeriod: { type: Number },
+    energyConsumption: { type: Number },
+    features: { type: String },
+    images: [{ url: { type: String } }],
+    currency: { type: String, required: true, enum: ["UYU", "USD"] },
+    price: { type: Number, required: true },
 });
-exports.default = mongoose_1.default.model("User", userSchema);
-//# sourceMappingURL=user.js.map
+exports.default = mongoose_1.default.model("Product", productchema);
+//# sourceMappingURL=product.js.map

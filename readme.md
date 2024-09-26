@@ -70,3 +70,6 @@ Create a .env file in the root directory and add your environment variables. An 
 
 - [ ] Protect getAllUser & getUserById endpoints with checkUserCredentials & checkUserRole middlewares.
 - [ ] Add events.
+- [ ] Generate PDF receipts.
+- [ ] Allow to order priorizing the delivery date.
+- [ ] Create alerts close to delivery date.

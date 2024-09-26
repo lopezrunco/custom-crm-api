@@ -24,24 +24,33 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const userSchema = new mongoose_1.Schema({
-    name: { type: String, required: true, trim: true },
-    email: { type: String, unique: true, required: true, trim: true },
-    password: { type: String, required: true, trim: true },
-    role: { type: String, required: true, enum: ['CUSTOMER', 'VENDOR', 'INSTALLER', 'SUPER'], trim: true },
-    mfaEnabled: { type: Boolean, required: false },
-    mfaSecret: { type: String, required: false },
-    tel: { type: String, required: false, trim: true },
-    address: { type: String, required: false, trim: true },
-    intersection: { type: String, required: false, trim: true },
-    neighborhood: { type: String, required: false, trim: true },
-    observations: { type: String, required: false, trim: true },
-    billing: {
-        rs: { type: String, required: false, trim: true },
-        rut: { type: Number, required: false, unique: true, trim: true },
-        address: { type: String, required: false, trim: true },
+const saleSchema = new mongoose_1.Schema({
+    customerId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
+    sellerId: { type: mongoose_1.Schema.Types.ObjectId, ref: "User", required: true },
+    paymentMethod: {
+        type: String,
+        enum: [
+            "DEBIT",
+            "CREDIT",
+            "CASH",
+            "CHECK",
+            "MOBILE",
+            "MERCADOPAGO",
+            "TRANSFER",
+        ],
+        required: true,
     },
-    profileImageUrl: { type: String, required: false, trim: true }
+    currency: { type: String, enum: ["UYU", "USD"], required: true },
+    price: { type: Number, required: true },
+    commission: { type: Number, required: true },
+    delivery: {
+        fromTimestamp: { type: Date, required: true },
+        toTimestamp: { type: Date, required: true },
+        installer: { type: mongoose_1.Schema.Types.ObjectId, ref: "User" },
+    },
+    products: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Product", required: true }],
+    benefit: { type: String, required: false },
+    observations: { type: String },
 });
-exports.default = mongoose_1.default.model("User", userSchema);
-//# sourceMappingURL=user.js.map
+exports.default = mongoose_1.default.model("Sale", saleSchema);
+//# sourceMappingURL=sale.js.map
