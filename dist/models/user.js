@@ -38,7 +38,7 @@ const userSchema = new mongoose_1.Schema({
     observations: { type: String, required: false, trim: true },
     billing: {
         rs: { type: String, required: false, trim: true },
-        rut: { type: Number, required: false, unique: true, trim: true },
+        rut: { type: Number, required: false, trim: true },
         address: { type: String, required: false, trim: true },
     },
     profileImageUrl: { type: String, required: false, trim: true }
