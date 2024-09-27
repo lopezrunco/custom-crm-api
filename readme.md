@@ -68,11 +68,9 @@ Create a .env file in the root directory and add your environment variables. An 
 
 ## Roadmap:
 
-- [ ] Protect getAllUser & getUserById endpoints with checkUserCredentials & checkUserRole middlewares.
+- [ ] Protect endpoints with checkUserCredentials & checkUserRole middlewares.
 - [ ] Add events.
 - [ ] Generate PDF receipts.
 - [ ] Allow to order priorizing the delivery date.
 - [ ] Create alerts close to delivery date.
-
-#### Testing:
-- [ ] Refactor seeder.tests.ts for new seeds.
+- [ ] Refactor the tests.
