@@ -4,6 +4,8 @@ import logging from "../config/logging";
 import User from "../models/user";
 import { seedData } from "./seeder";
 
+// TO DO: Refactor for new seeds.
+
 // Mock the mongoose methods to avoid actual DB connections during the tests.
 jest.mock("mongoose", () => ({
   connect: jest.fn(),
