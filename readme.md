@@ -70,7 +70,7 @@ Create a .env file in the root directory and add your environment variables. An 
 
 - [ ] Protect endpoints with checkUserCredentials & checkUserRole middlewares.
 - [ ] Add events.
-- [ ] Generate PDF receipts.
+- [X] Generate PDF receipts.
 - [ ] Allow to order priorizing the delivery date.
 - [ ] Create alerts close to delivery date.
 - [ ] Refactor the tests.
