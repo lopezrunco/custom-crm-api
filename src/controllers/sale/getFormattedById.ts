@@ -3,6 +3,8 @@ import { RequestType, ResponseType } from "common";
 
 import { getDateString } from "../../utils/getDateString";
 import { getPaymentMethodString } from "../../utils/getPatmentMethodString";
+import { formatUser } from "../../utils/formatUser";
+import { formatProduct } from "../../utils/formatProduct";
 
 import Sale from "../../models/sale";
 import User from "../../models/user";
@@ -17,39 +19,20 @@ module.exports = async (req: RequestType, res: ResponseType) => {
         message: `Sale with id ${req.params.id} not found`,
       });
 
-    const userPromises = [
+    // Find users by ID, get the name, format and handle errors.
+    const [installer, customer, seller] = await Promise.all([
       User.findById(sale.delivery.installer).select("name"),
       User.findById(sale.customerId).select("name"),
       User.findById(sale.sellerId).select("name"),
-    ]
+    ]);
+    const formattedInstaller = formatUser(installer, sale.delivery.installer)
+    const formattedCustomer = formatUser(customer, sale.customerId)
+    const formattedSeller = formatUser(seller, sale.sellerId)
 
-    // Find users by ID and get the name.
-    const [installer, customer, seller] = await Promise.all(userPromises);
-
-    // Format users and prevent not fould errors.
-    const formattedInstaller = installer 
-      ? { _id: installer._id, name: installer.name } 
-      : { _id: sale.delivery.installer, name: "Instalador desconocido" }
-
-    const formattedCustomer = customer 
-      ? { _id: customer._id, name: customer.name } 
-      : { _id: sale.customerId, name: "Cliente desconocido" }
-
-    const formattedSeller = seller 
-      ? { _id: seller._id, name: seller.name } 
-      : { _id: sale.sellerId, name: "Vendedor desconocido" }
-
-    // Find products by ID and get the required info.
+    // Find products by ID, get the info, format and handle errors.
     const productPromises = sale.products.map(async (productId) => {
       const product = await Product.findById(productId).select("name currency price")
-
-      // Format product and prevent not found errors.
-      return {
-        _id: productId,
-        name: product ? product.name : "Producto desconocido.",
-        currency: product ? product.currency : "Moneda desconocida.",
-        price: product ? product.price : "Precio desconocido."
-      }
+      return formatProduct(productId, product)
     })
     const products = await Promise.all(productPromises)
 

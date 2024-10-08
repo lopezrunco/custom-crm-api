@@ -68,9 +68,11 @@ Create a .env file in the root directory and add your environment variables. An 
 
 ## Roadmap:
 
+- [X] Generate PDF receipts.
 - [ ] Protect endpoints with checkUserCredentials & checkUserRole middlewares.
 - [ ] Add events.
-- [X] Generate PDF receipts.
 - [ ] Allow to order priorizing the delivery date.
 - [ ] Create alerts close to delivery date.
 - [ ] Refactor the tests.
+- [ ] Format the code.
+- [ ] Clean `any`s.
