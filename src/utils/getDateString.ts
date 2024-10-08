@@ -23,7 +23,7 @@ const days = [
   "Sábado",
 ];
 
-export const getDateString = (timestamp: string) => {
+export const getDateString = (timestamp: Date) => {
   const date = new Date(timestamp);
 
   const dayName = days[date.getDay()];
